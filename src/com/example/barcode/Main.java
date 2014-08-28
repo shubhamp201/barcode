@@ -10,7 +10,7 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-public class Main extends Activity implements View.OnClickListener
+public class Main extends Activity
 {
 
     private Button scanBtn;
@@ -28,17 +28,12 @@ public class Main extends Activity implements View.OnClickListener
         scanBtn = (Button) findViewById(R.id.scan_button);
         formatTxt = (TextView) findViewById(R.id.scan_format);
         contentTxt = (TextView) findViewById(R.id.scan_content);
-        scanBtn.setOnClickListener(this);
     }
 
-    @Override
-    public void onClick(View view)
+    public void scanBarcode(View view)
     {
-        if (view.getId() == R.id.scan_button)
-        {
-            IntentIntegrator scanIntegrator = new IntentIntegrator(this);
-            scanIntegrator.initiateScan();
-        }
+        IntentIntegrator scanIntegrator = new IntentIntegrator(this);
+        scanIntegrator.initiateScan();
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent)
