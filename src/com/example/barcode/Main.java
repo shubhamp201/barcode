@@ -52,11 +52,10 @@ public class Main extends Activity
             contentTxt.setText("CONTENT: " + scanContent);
 
             // barcode image
-            Bitmap bitmap = null;
             ImageView iv = (ImageView) findViewById(R.id.imageView);
 
             try {
-                bitmap = encodeAsBitmap(scanContent, BarcodeFormat.CODE_128, 600, 300);
+                Bitmap bitmap = encodeAsBitmap(scanContent, BarcodeFormat.CODE_128, 600, 300);
                 iv.setImageBitmap(bitmap);
 
             } catch (WriterException e) {
@@ -65,8 +64,7 @@ public class Main extends Activity
         }
         else
         {
-            Toast toast = Toast.makeText(getApplicationContext(),
-                    "No scan data received!", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(getApplicationContext(),"No scan data received!", Toast.LENGTH_SHORT);
             toast.show();
         }
     }
