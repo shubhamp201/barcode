@@ -55,7 +55,7 @@ public class Main extends Activity
             ImageView iv = (ImageView) findViewById(R.id.imageView);
 
             try {
-                Bitmap bitmap = encodeAsBitmap(scanContent, BarcodeFormat.CODE_128, 600, 300);
+                Bitmap bitmap = encodeAsBitmap(scanContent, BarcodeFormat.EAN_13, 600, 300);
                 iv.setImageBitmap(bitmap);
 
             } catch (WriterException e) {
