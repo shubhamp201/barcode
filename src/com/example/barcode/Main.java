@@ -8,7 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.*;
 import com.database.BarcodeContract;
 import com.database.BarcodeDbHelper;
@@ -37,6 +39,19 @@ public class Main extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         ListView listView = (ListView)findViewById(R.id.listView);
+
+        // Create a progress bar to display while the list loads
+        ProgressBar progressBar = new ProgressBar(this);
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        progressBar.setLayoutParams(params);
+        progressBar.setIndeterminate(true);
+        listView.setEmptyView(progressBar);
+
+        // Must add the progress bar to the root of the layout
+        ViewGroup root = (ViewGroup) findViewById(android.R.id.content);
+        root.addView(progressBar);
+
         dbHelper = new BarcodeDbHelper(this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -88,7 +103,7 @@ public class Main extends Activity
             values.put(Barcode.COLUMN_NAME_BARCODE_NAME, "FlyBuyer");
 
             SQLiteDatabase db = dbHelper.getWritableDatabase();
-            db.insert(Barcode.TABLE_NAME,  null, values);
+            db.insert(Barcode.TABLE_NAME, null, values);
             db.close();
 
             // barcode image
