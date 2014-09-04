@@ -1,18 +1,20 @@
 package com.example.barcode;
 
 import android.app.Activity;
+import android.app.LoaderManager;
 import android.content.ContentValues;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import com.database.BarcodeContract;
+import com.database.BarcodeContract.Barcode;
 import com.database.BarcodeDbHelper;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -21,14 +23,14 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import com.database.BarcodeContract.*;
 
 import java.util.EnumMap;
 import java.util.Map;
 
-public class Main extends Activity
+public class Main extends Activity    implements LoaderManager.LoaderCallbacks<Cursor>
 {
     private SQLiteOpenHelper dbHelper;
+    private SimpleCursorAdapter mAdapter;
 
     /**
      * Called when the activity is first created.
@@ -38,7 +40,7 @@ public class Main extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        ListView listView = (ListView)findViewById(R.id.listView);
+        ListView listView = (ListView) findViewById(R.id.listView);
 
         // Create a progress bar to display while the list loads
         ProgressBar progressBar = new ProgressBar(this);
@@ -61,22 +63,50 @@ public class Main extends Activity
                 Barcode.COLUMN_NAME_BARCODE_NAME
         };
 
-        Cursor c = db.query(
-                Barcode.TABLE_NAME,  // The table to query
-                projection,                               // The columns to return
-                null,                                // The columns for the WHERE clause
-                null,                            // The values for the WHERE clause
-                null,                                     // don't group the rows
-                null,                                     // don't filter by row groups
-                null                                 // The sort order
-        );
-        c.moveToFirst();
-        while(!c.isAfterLast())
-        {
-            String barcodeName = c.getString(c.getColumnIndex(Barcode.COLUMN_NAME_BARCODE_NAME));
+        String[] fromColumns = {
+                Barcode.COLUMN_NAME_BARCODE_NAME
+        };
 
-        }
+        int[] toViews = {android.R.id.text1};
 
+        mAdapter = new SimpleCursorAdapter(this,
+                android.R.layout.simple_list_item_1, null,
+                fromColumns, toViews, 0);
+        listView.setAdapter(mAdapter);
+
+        getLoaderManager().initLoader(0, null, this);
+
+    }
+
+    // Called when a new Loader needs to be created
+    public Loader<Cursor> onCreateLoader(int id, Bundle args)
+    {
+        // Now create and return a CursorLoader that will take care of
+        // creating a Cursor for the data being displayed.
+        return new CursorLoader(this, ContactsContract.Data.CONTENT_URI,
+                PROJECTION, SELECTION, null, null);
+    }
+
+    // Called when a previously created loader has finished loading
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data)
+    {
+        // Swap the new cursor in.  (The framework will take care of closing the
+        // old cursor once we return.)
+        mAdapter.swapCursor(data);
+    }
+
+    // Called when a previously created loader is reset, making the data unavailable
+    public void onLoaderReset(Loader<Cursor> loader)
+    {
+        // This is called when the last Cursor provided to onLoadFinished()
+        // above is about to be closed.  We need to make sure we are no
+        // longer using it.
+        mAdapter.swapCursor(null);
+    }
+
+    public void onListItemClick(ListView l, View v, int position, long id)
+    {
+        // Do something when a list item is clicked
     }
 
     public void scanBarcode(View view)
@@ -109,50 +139,60 @@ public class Main extends Activity
             // barcode image
             ImageView iv = (ImageView) findViewById(R.id.imageView);
 
-            try {
+            try
+            {
                 Bitmap bitmap = encodeAsBitmap(scanContent, BarcodeFormat.EAN_13, 600, 300);
                 iv.setImageBitmap(bitmap);
 
-            } catch (WriterException e) {
+            }
+            catch (WriterException e)
+            {
                 e.printStackTrace();
             }
         }
         else
         {
-            Toast toast = Toast.makeText(getApplicationContext(),"No scan data received!", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(getApplicationContext(), "No scan data received!", Toast.LENGTH_SHORT);
             toast.show();
         }
     }
 
-    private static final int WHITE = 0xFFFFFFFF;
-    private static final int BLACK = 0xFF000000;
+private static final int WHITE = 0xFFFFFFFF;
+private static final int BLACK = 0xFF000000;
 
     Bitmap encodeAsBitmap(String contents, BarcodeFormat format, int img_width, int img_height) throws WriterException
     {
         String contentsToEncode = contents;
-        if (contentsToEncode == null) {
+        if (contentsToEncode == null)
+        {
             return null;
         }
         Map<EncodeHintType, Object> hints = null;
         String encoding = guessAppropriateEncoding(contentsToEncode);
-        if (encoding != null) {
+        if (encoding != null)
+        {
             hints = new EnumMap<EncodeHintType, Object>(EncodeHintType.class);
             hints.put(EncodeHintType.CHARACTER_SET, encoding);
         }
         MultiFormatWriter writer = new MultiFormatWriter();
         BitMatrix result;
-        try {
+        try
+        {
             result = writer.encode(contentsToEncode, format, img_width, img_height, hints);
-        } catch (IllegalArgumentException iae) {
+        }
+        catch (IllegalArgumentException iae)
+        {
             // Unsupported format
             return null;
         }
         int width = result.getWidth();
         int height = result.getHeight();
         int[] pixels = new int[width * height];
-        for (int y = 0; y < height; y++) {
+        for (int y = 0; y < height; y++)
+        {
             int offset = y * width;
-            for (int x = 0; x < width; x++) {
+            for (int x = 0; x < width; x++)
+            {
                 pixels[offset + x] = result.get(x, y) ? BLACK : WHITE;
             }
         }
@@ -163,10 +203,13 @@ public class Main extends Activity
         return bitmap;
     }
 
-    private static String guessAppropriateEncoding(CharSequence contents) {
+    private static String guessAppropriateEncoding(CharSequence contents)
+    {
         // Very crude at the moment
-        for (int i = 0; i < contents.length(); i++) {
-            if (contents.charAt(i) > 0xFF) {
+        for (int i = 0; i < contents.length(); i++)
+        {
+            if (contents.charAt(i) > 0xFF)
+            {
                 return "UTF-8";
             }
         }
