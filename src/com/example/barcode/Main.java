@@ -24,10 +24,11 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Map;
 
-public class Main extends Activity    implements LoaderManager.LoaderCallbacks<Cursor>
+public class Main extends Activity
 {
     private SQLiteOpenHelper dbHelper;
     private SimpleCursorAdapter mAdapter;
@@ -57,56 +58,35 @@ public class Main extends Activity    implements LoaderManager.LoaderCallbacks<C
         dbHelper = new BarcodeDbHelper(this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-
         String[] projection = {
                 Barcode._ID,
                 Barcode.COLUMN_NAME_BARCODE_NAME
         };
 
-        String[] fromColumns = {
-                Barcode.COLUMN_NAME_BARCODE_NAME
-        };
+        Cursor c = db.query(
+                Barcode.TABLE_NAME,  // The table to query
+                projection,                               // The columns to return
+                null,                                // The columns for the WHERE clause
+                null,                            // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                null                                 // The sort order
+        );
 
-        int[] toViews = {android.R.id.text1};
+        ArrayList<String> list = new ArrayList<String>();
+        c.moveToFirst();
+        while(!c.isAfterLast())
+        {
+            String barcodeName = c.getString(c.getColumnIndex(Barcode.COLUMN_NAME_BARCODE_NAME));
+            list.add(barcodeName);
 
-        mAdapter = new SimpleCursorAdapter(this,
-                android.R.layout.simple_list_item_1, null,
-                fromColumns, toViews, 0);
-        listView.setAdapter(mAdapter);
+        }
 
-        getLoaderManager().initLoader(0, null, this);
+        final ArrayAdapter adapter = new ArrayAdapter(this,
+                android.R.layout.simple_list_item_1, list);
+        listView.setAdapter(adapter);
 
-    }
 
-    // Called when a new Loader needs to be created
-    public Loader<Cursor> onCreateLoader(int id, Bundle args)
-    {
-        // Now create and return a CursorLoader that will take care of
-        // creating a Cursor for the data being displayed.
-        return new CursorLoader(this, ContactsContract.Data.CONTENT_URI,
-                PROJECTION, SELECTION, null, null);
-    }
-
-    // Called when a previously created loader has finished loading
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data)
-    {
-        // Swap the new cursor in.  (The framework will take care of closing the
-        // old cursor once we return.)
-        mAdapter.swapCursor(data);
-    }
-
-    // Called when a previously created loader is reset, making the data unavailable
-    public void onLoaderReset(Loader<Cursor> loader)
-    {
-        // This is called when the last Cursor provided to onLoadFinished()
-        // above is about to be closed.  We need to make sure we are no
-        // longer using it.
-        mAdapter.swapCursor(null);
-    }
-
-    public void onListItemClick(ListView l, View v, int position, long id)
-    {
-        // Do something when a list item is clicked
     }
 
     public void scanBarcode(View view)
