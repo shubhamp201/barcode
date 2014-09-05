@@ -43,18 +43,6 @@ public class Main extends Activity
         setContentView(R.layout.main);
         ListView listView = (ListView) findViewById(R.id.listView);
 
-        // Create a progress bar to display while the list loads
-        ProgressBar progressBar = new ProgressBar(this);
-        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        progressBar.setLayoutParams(params);
-        progressBar.setIndeterminate(true);
-        listView.setEmptyView(progressBar);
-
-        // Must add the progress bar to the root of the layout
-        ViewGroup root = (ViewGroup) findViewById(android.R.id.content);
-        root.addView(progressBar);
-
         dbHelper = new BarcodeDbHelper(this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
