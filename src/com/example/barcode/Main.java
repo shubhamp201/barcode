@@ -30,6 +30,9 @@ import java.util.Map;
 
 public class Main extends Activity
 {
+    private static final int WHITE = 0xFFFFFFFF;
+    private static final int BLACK = 0xFF000000;
+
     private SQLiteOpenHelper dbHelper;
     private SimpleCursorAdapter mAdapter;
 
@@ -63,7 +66,7 @@ public class Main extends Activity
 
         ArrayList<String> list = new ArrayList<String>();
         c.moveToFirst();
-        while(!c.isAfterLast())
+        while (!c.isAfterLast())
         {
             String barcodeName = c.getString(c.getColumnIndex(Barcode.COLUMN_NAME_BARCODE_NAME));
             list.add(barcodeName);
@@ -112,8 +115,7 @@ public class Main extends Activity
                 Bitmap bitmap = encodeAsBitmap(scanContent, BarcodeFormat.EAN_13, 600, 300);
                 iv.setImageBitmap(bitmap);
 
-            }
-            catch (WriterException e)
+            } catch (WriterException e)
             {
                 e.printStackTrace();
             }
@@ -125,10 +127,7 @@ public class Main extends Activity
         }
     }
 
-private static final int WHITE = 0xFFFFFFFF;
-private static final int BLACK = 0xFF000000;
-
-    Bitmap encodeAsBitmap(String contents, BarcodeFormat format, int img_width, int img_height) throws WriterException
+    private Bitmap encodeAsBitmap(String contents, BarcodeFormat format, int img_width, int img_height) throws WriterException
     {
         String contentsToEncode = contents;
         if (contentsToEncode == null)
@@ -147,8 +146,7 @@ private static final int BLACK = 0xFF000000;
         try
         {
             result = writer.encode(contentsToEncode, format, img_width, img_height, hints);
-        }
-        catch (IllegalArgumentException iae)
+        } catch (IllegalArgumentException iae)
         {
             // Unsupported format
             return null;
