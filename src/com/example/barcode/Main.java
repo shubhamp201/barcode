@@ -1,18 +1,14 @@
 package com.example.barcode;
 
 import android.app.Activity;
-import android.app.LoaderManager;
 import android.content.ContentValues;
-import android.content.CursorLoader;
 import android.content.Intent;
-import android.content.Loader;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.*;
 import com.database.BarcodeContract.Barcode;
 import com.database.BarcodeDbHelper;
@@ -34,6 +30,7 @@ public class Main extends Activity
     private static final int BLACK = 0xFF000000;
 
     private SQLiteOpenHelper dbHelper;
+    private SQLiteDatabase db;
     private SimpleCursorAdapter mAdapter;
 
     /**
@@ -47,8 +44,13 @@ public class Main extends Activity
         ListView listView = (ListView) findViewById(R.id.listView);
 
         dbHelper = new BarcodeDbHelper(this);
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        db = dbHelper.getReadableDatabase();
 
+        loadList(listView);
+    }
+
+    private void loadList(ListView listView)
+    {
         String[] projection = {
                 Barcode._ID,
                 Barcode.COLUMN_NAME_BARCODE_NAME
@@ -76,8 +78,6 @@ public class Main extends Activity
         final ArrayAdapter adapter = new ArrayAdapter(this,
                 android.R.layout.simple_list_item_1, list);
         listView.setAdapter(adapter);
-
-
     }
 
     public void scanBarcode(View view)
