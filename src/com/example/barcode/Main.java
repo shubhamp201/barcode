@@ -31,7 +31,6 @@ public class Main extends Activity
 
     private SQLiteOpenHelper dbHelper;
     private SQLiteDatabase db;
-    private SimpleCursorAdapter mAdapter;
 
     /**
      * Called when the activity is first created.
