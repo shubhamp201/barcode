@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Map;
 
-public class Main extends Activity
+public class MainActivity extends Activity
 {
     private static final int WHITE = 0xFFFFFFFF;
     private static final int BLACK = 0xFF000000;
