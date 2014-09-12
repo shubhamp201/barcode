@@ -1,44 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.view.ViewPager
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/pager"
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" >
-    <ListView
+        android:layout_height="match_parent" >
+        <ListView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/listView" android:layout_alignParentTop="true" android:layout_alignParentLeft="true"
             android:layout_above="@+id/scan_button"/>
-    <Button android:id="@+id/scan_button"
+        <Button android:id="@+id/scan_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/scan"
             android:onClick="scanBarcode" android:layout_above="@+id/imageView" android:layout_centerHorizontal="true"/>
-    <TextView
+        <TextView
             android:id="@+id/scan_format"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textIsSelectable="true"
             android:layout_centerHorizontal="true"
             android:layout_below="@id/scan_button" />
-    <TextView
+        <TextView
             android:id="@+id/scan_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textIsSelectable="true"
             android:layout_centerHorizontal="true"
             android:layout_below="@id/scan_format" />
-    <ImageView
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/imageView" android:layout_centerVertical="true" android:layout_centerHorizontal="true"/>
 
-</RelativeLayout>
+    </RelativeLayout>
 
-</android.support.v4.view.ViewPager>
+</FrameLayout>

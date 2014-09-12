@@ -2,4 +2,5 @@
 <resources>
     <string name="app_name">myapp</string>
     <string name="scan">scan</string>
+    <string name="dummy_section_text">Section %1d is just a dummy section.</string>
 </resources>

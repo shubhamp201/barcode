@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.Domain.DummyScreenFragment;
 import com.Domain.RootScreenFragment;
 
 /**
@@ -18,16 +19,30 @@ public class RootScreenPagerAdapter extends FragmentPagerAdapter
 
     @Override
     public Fragment getItem(int i) {
-        Fragment fragment = new RootScreenFragment();
-        Bundle args = new Bundle();
-        // Our object is just an integer :-P
-        args.putInt(RootScreenFragment.ARG_OBJECT, i + 1);
-        fragment.setArguments(args);
-        return fragment;
+        switch (i) {
+            case 0:
+                // The first section of the app is the most interesting -- it offers
+                // a launchpad into the other demonstrations in this example application.
+                return new RootScreenFragment();
+
+            default:
+                // The other sections of the app are dummy placeholders.
+                Fragment fragment = new DummyScreenFragment();
+                Bundle args = new Bundle();
+                args.putInt(DummyScreenFragment.ARG_SECTION_NUMBER, i + 1);
+                fragment.setArguments(args);
+                return fragment;
+        }
     }
 
     @Override
     public int getCount() {
         return 2;
     }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return "Section " + (position + 1);
+    }
+
 }
