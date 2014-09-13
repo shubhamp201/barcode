@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.Domain.DummyScreenFragment;
+import com.Domain.ScanScreenFragment;
 import com.Domain.RootScreenFragment;
 
 /**
@@ -27,9 +27,9 @@ public class RootScreenPagerAdapter extends FragmentPagerAdapter
 
             default:
                 // The other sections of the app are dummy placeholders.
-                Fragment fragment = new DummyScreenFragment();
+                Fragment fragment = new ScanScreenFragment();
                 Bundle args = new Bundle();
-                args.putInt(DummyScreenFragment.ARG_SECTION_NUMBER, i + 1);
+                args.putInt(ScanScreenFragment.ARG_SECTION_NUMBER, i + 1);
                 fragment.setArguments(args);
                 return fragment;
         }
