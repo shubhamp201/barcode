@@ -24,7 +24,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper
                     Barcode._ID + " INTEGER PRIMARY KEY," +
                     Barcode.COLUMN_NAME_BARCODE_NAME + TEXT_TYPE + COMMA_SEP +
                     Barcode.COLUMN_NAME_BARCODE_CONTENT + TEXT_TYPE + COMMA_SEP +
-                    Barcode.COLUMN_NAME_BARCODE_FORMAT + TEXT_TYPE + COMMA_SEP +
+                    Barcode.COLUMN_NAME_BARCODE_FORMAT + TEXT_TYPE +
             " )";
 
     public BarcodeDbHelper(Context context) {
