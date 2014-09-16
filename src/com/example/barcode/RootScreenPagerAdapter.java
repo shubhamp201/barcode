@@ -11,8 +11,7 @@ import com.Domain.RootScreenFragment;
 /**
  * Created by Luke on 10/09/2014.
  */
-public class RootScreenPagerAdapter extends FragmentPagerAdapter
-{
+public class RootScreenPagerAdapter extends FragmentPagerAdapter {
     public RootScreenPagerAdapter(FragmentManager fm) {
         super(fm);
     }
