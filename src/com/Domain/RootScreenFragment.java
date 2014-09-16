@@ -88,11 +88,7 @@ public class RootScreenFragment extends Fragment {
         listView.setAdapter(adapter);
     }
 
-    public void scanBarcode(View view)
-    {
-        IntentIntegrator scanIntegrator = new IntentIntegrator(getActivity());
-        scanIntegrator.initiateScan();
-    }
+
 
 
 
