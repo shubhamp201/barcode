@@ -27,9 +27,6 @@ public class RootScreenPagerAdapter extends FragmentPagerAdapter {
             default:
                 // The other sections of the app are dummy placeholders.
                 Fragment fragment = new ScanScreenFragment();
-                Bundle args = new Bundle();
-                args.putInt(ScanScreenFragment.ARG_SECTION_NUMBER, i + 1);
-                fragment.setArguments(args);
                 return fragment;
         }
     }
